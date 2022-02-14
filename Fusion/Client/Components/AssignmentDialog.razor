@@ -1,0 +1,90 @@
+﻿@if (ShowDialog)
+{
+    <div class="modal fade show d-block" id="addAssignmentModel" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Assignment</h4>
+                    <button type="button" class="close" @onclick="@Close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+
+                <EditForm Model="@assignment" OnValidSubmit="@HandleValidSubmit">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+
+                    <div class="modal-body">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-md-12">
+                                <input type="hidden" id="AssignID" name="AssignID" @bind-value="assignment.AssignID" />
+                                <input type="hidden" id="IsPrimary" name="IsPrimary" @bind-value="assignment.IsPrimary" />
+                                <label class="col-form-label">Assign to</label>
+                                <select class="form-control" name="LastFirstName" id="BindPeopleList" @bind="assignment.EmployeeID">
+                                    @if (EmployeesList == null)
+                                    {
+                                        <option>Loading...</option>
+                                    }
+                                    else
+                                    {
+                                        <option value=" "></option>
+                                        foreach (var owner in EmployeesList)
+                                        {
+                                            <option value="@owner.EmployeeID">@(owner.LastName + ", " + owner.FirstName)</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-md-12">
+                                <label class="col-form-label">Follow Up Date</label>
+                                <input type="date" class="form-control" name="FollowUp" id="txtDate" required @bind-value="assignment.FollowUp" >
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-md-12">
+                                <label class="col-form-label">Priority</label>
+                                <select class="form-control" name="Role" id="Role" @bind="assignment.Role">
+                                    <option value="High ">High</option>
+                                    <option value="Medium ">Medium</option>
+                                    <option value="Low">Low</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-md-12">
+                                <label class="col-form-label">Status</label>
+                                <select class="form-control" name="StatusCode" id="BindAsgnStatusList" @bind="assignment.StatusCode">
+                                    @if (AsgnstatusList == null)
+                                    {
+                                        <option>Loading...</option>
+                                    }
+                                    else
+                                    {
+                                        <option value=" "></option>
+                                        foreach (var asgn in AsgnstatusList)
+                                        {
+                                            <option value="@asgn.CodeID">@asgn.CodeDesc</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-md-12">
+                                <label class="col-form-label">Assignment Responsibility</label>
+                                <textarea class="form-control" id="txtResponsibility" name="Responsibility" required placeholder="Summary" @bind="assignment.Responsibility"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" id="btnNotesave" class="btn btn-primary" value="Save" />
+                        <a class="btn btn-outline-primary" @onclick="@Close">Cancel</a>
+                    </div>
+                </EditForm>
+            </div>
+
+        </div>
+    </div>
+}

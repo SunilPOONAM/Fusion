@@ -1,0 +1,33 @@
+﻿@page "/"
+@layout EmptyLayout
+@inject IJSRuntime jsruntime
+
+<AuthorizeView>
+    <NotAuthorized Context="Auth">
+        @((MarkupString)loader)
+        <div class="container">
+            <div class="card card-container">
+                <h1 class="text-center" style="font-size:50px; color:grey; font-weight:bold; margin-bottom:60px;"><span style="font-size: 60px; color:deepskyblue;">F</span>USION</h1>
+                <EditForm Model="@employee" OnValidSubmit="@HandleValidSubmit" class="form-signin">
+                    <DataAnnotationsValidator />
+                    <span id="reauth-email" class="reauth-email"></span>
+                    <InputText class="form-control" placeholder="Email" id="username" @bind-Value="employee.EmailAddress" />
+
+                    <ValidationMessage For="@(() => employee.EmailAddress)" />
+                    <br />
+                    <InputText type="password" class="form-control" placeholder="Password" id="password" @bind-Value="employee.UserID" />
+                    <ValidationMessage For="@(() => employee.UserID)" />
+
+                    <span class=" field-validation-error">
+                        <span style="color: red;">@errorMessage</span>
+                    </span>
+                    <br />
+                    <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">SIGN IN</button>
+                </EditForm>
+            </div>
+        </div>
+    </NotAuthorized>
+    <Authorized>
+        <h2>You are Already Logged in</h2>
+    </Authorized>
+</AuthorizeView>

@@ -1,0 +1,662 @@
+﻿@page "/BillToCustomer"
+@using Fusion.Client.Components
+@((MarkupString)loader)
+
+@if (cust == null)
+{
+    <h2>Loading....</h2>
+}
+else
+{
+    <div class="col-md-12 col-lg-12 col-xl-12 inner-main-row">
+        <div class="main-body">
+            <div class="row second-row-content">
+                <div class="col-md-12 action-btn-box" style="display:flex">
+                    <div style="margin-right: 5px;">
+                        <div class="inner-content-second-row">
+                            <button type="button" class="btn btn-default" onclick="jquery:GoBack()">Go Back</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="small">
+
+                <EditForm Model="@cust">
+
+                    <div class="col" style="padding: 20px 20px;">
+                        <div class="row heading-row" style="border-bottom: solid;">
+                            <h4>CUSTOMER INFORMATION</h4>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col">
+                                <div class="row" style="padding-bottom: 3px;">
+                                    <div class="col-3">
+                                        <label>Bill-to ID</label>
+                                        <input type="hidden" id="IsNewCustomer" name="IsNewCustomer" @bind-value="@IsNewCustomer">
+                                        <input type="hidden" id="OppID" name="OppID" @bind-value="@OppID">
+                                    </div>
+                                    <div class="col-3">
+                                        <input type="text" class="form-control form-control-sm" name="CustomerID" id="CustomerID" value="@cust.CustomerID" />
+                                        <div class="error-message alert-danger">Please enter Bill-to ID</div>
+                                    </div>
+                                </div>
+                                <div class="row" style="padding-bottom: 3px;">
+                                    <div class="col-3">
+                                        <label>Bill-to Name</label>
+                                    </div>
+                                    <div class="col-7">
+                                        <input type="text" class="form-control form-control-sm" name="CustomerName" id="CustomerName" value="@cust.CustomerName" />
+                                        <div class="error-message alert-danger">Please enter Customer Name</div>
+                                    </div>
+                                </div>
+                                <div class="row" style="padding-bottom: 3px;">
+                                    <div class="col-3">
+                                        <label>Nickname</label>
+                                    </div>
+                                    <div class="col-7">
+                                        <input type="text" class="form-control form-control-sm" name="Nickname" id="CustomerID" value="@cust.Nickname" />
+                                    </div>
+                                </div>
+                                <div class="row" style="padding-bottom: 3px;">
+                                    <div class="col-3">
+                                        <label>Master Customer</label>
+                                    </div>
+                                    <div class="col-7">
+                                        <input type="text" class="form-control form-control-sm" name="MasterCustomerName" id="MasterCustomerName" readonly value="@MasterCustomerName" />
+                                    </div>
+                                </div>
+                                <div class="row" style="padding-bottom: 3px;">
+                                    <div class="col-3">
+                                        <label>Notes</label>
+                                    </div>
+                                    <div class="col-7">
+                                        <textarea class="form-control form-control-sm" rows="+3" name="CustomerNotes" id="CustomerNotes">@cust.CustomerNotes</textarea>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col">
+                                <div class="row" style="padding-bottom: 3px;">
+                                    <div class="col-3">
+                                        <label>Primary Contact</label>
+                                    </div>
+                                    <div class="col-5">
+                                        <input type="text" class="form-control form-control-sm" name="BillingContactID" id="BillingContactID" value="@cust.BillingContactID" />
+                                    </div>
+                                </div>
+                                <div class="row" style="padding-bottom: 3px;">
+                                    <div class="col-3">
+                                        <label>Primary Phone</label>
+                                    </div>
+                                    <div class="col-5">
+                                        <input type="text" class="form-control form-control-sm" name="Phone" id="Phone" value="@cust.Phone" />
+                                    </div>
+                                </div>
+                                <div class="row" style="padding-bottom: 3px;">
+                                    <div class="col-3">
+                                        <label>Fax</label>
+                                    </div>
+                                    <div class="col-5">
+                                        <input type="text" class="form-control form-control-sm" name="Fax" id="Fax" value="@cust.Fax" />
+                                    </div>
+                                </div>
+                                <div class="row" style="padding-bottom: 3px;">
+                                    <div class="col-3">
+                                        <label>Email</label>
+                                    </div>
+                                    <div class="col-5">
+                                        <input type="text" class="form-control form-control-sm" name="Email" id="Email" value="@cust.Email" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="row" style="padding-bottom: 3px;">
+                                    <div class="col-3">
+                                        <label>Entered By</label>
+                                    </div>
+                                    <div class="col-5">
+                                        <input type="text" class="form-control form-control-sm" name="EnteredByName" id="EnteredBy" value="@EnteredByName" readonly />
+                                    </div>
+                                </div>
+                                <div class="row" style="padding-bottom: 3px;">
+                                    <div class="col-3">
+                                        <label>Entry Date</label>
+                                    </div>
+                                    <div class="col-5">
+                                        <input type="text" class="form-control form-control-sm" name="EntryDate" id="EntryDate" value="@cust.EntryDate" readonly />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-3">
+                                        <label>Follow Up Date</label>
+                                    </div>
+                                    <div class="col-5">
+                                        <input type="date" class="form-control form-control-sm" name="FollowUpDate" id="FollowUpDate" value="" />
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+
+                    <ul class="nav nav-tabs" id="tabstrip" role="tablist" style="padding-left: -20px; font-size: medium;">
+                        <li class="nav-item">
+                            <a href="#CustomerDetailsTab" class="nav-link active" role="tab" data-toggle="tab" id="tab1">BILLING DETAILS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#ContactsTab" class="nav-link" role="tab" data-toggle="tab" id="tab2" @onclick="GetContact">CONTACTS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#AgreementsTab" class="nav-link" role="tab" data-toggle="tab" id="tab3">AGREEMENTS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#OpportunitiesTab" class="nav-link" role="tab" data-toggle="tab" id="tab4">OPEN OPPORTUNITIES</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#SitesTab" class="nav-link" role="tab" data-toggle="tab" id="tab5">SITES</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#AssetsTab" class="nav-link" role="tab" data-toggle="tab" id="tab6">ASSETS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#CustomerPOTab" class="nav-link" role="tab" data-toggle="tab" id="tab7">CUSTOMER POs</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#InvoicesTab" class="nav-link" role="tab" data-toggle="tab" id="tab8">INVOICES</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#NotesAssignmentsTab" class="nav-link" role="tab" data-toggle="tab" id="tab9">NOTES & ASSIGNMENTS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#AttachmentsTab" class="nav-link" role="tab" data-toggle="tab" id="tab10">ATTACHMENTS</a>
+                        </li>
+                    </ul>
+
+                    <div class="row heading-row" style="border-bottom: solid; padding-top:10px; margin-left:0px;"></div>
+
+                    <!-- Tab Content Containers -->
+                    <div class="tab-content" style="padding-top: 20px; padding-right: 20px;">
+
+                        <div class="tab-pane active" id="CustomerDetailsTab">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="row" style="padding-bottom: 3px;">
+                                            <div class="col-3">
+                                                <label>Billing Address</label>
+                                            </div>
+                                            <div class="col-7">
+                                                <input type="text" class="form-control form-control-sm" name="Address1" placeholder="Address Line 1" id="Address1" value="@cust.Address1">
+                                            </div>
+                                        </div>
+                                        <div class="row" style="padding-bottom: 3px;">
+                                            <div class="col-3">
+                                            </div>
+                                            <div class="col-7">
+                                                <input type="text" class="form-control form-control-sm" name="Address2" placeholder="Address Line 2" id="Address2" value="@cust.Address2">
+                                            </div>
+                                        </div>
+                                        <div class="row" style="padding-bottom: 3px;">
+                                            <div class="col-3">
+                                            </div>
+                                            <div class="col-7">
+                                                <div class="row" style="padding-left: 15px;">
+                                                    <div style="width: 50%;">
+                                                        <input type="text" class="form-control form-control-sm" name="City" placeholder="City" id="City" value="@cust.City">
+                                                    </div>
+                                                    <div style="padding-right: 0px; padding-left: 3px; width: 17%;">
+                                                        <input type="text" class="form-control form-control-sm" name="State" placeholder="State" id="State" value="@cust.State">
+                                                    </div>
+                                                    <div style="padding-left: 3px; width: 29%;">
+                                                        <input type="text" class="form-control form-control-sm" name="Zip" placeholder="Zip" id="Zip" value="@cust.Zip">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="row" style="padding-bottom: 3px;">
+                                            <div class="col-2">
+                                                <label>Delivery Method</label>
+                                            </div>
+                                            <div class="col-4">
+                                                <select class="form-control form-control-sm" name="DeliveryMethodType" id="DeliveryMethodType" onchange="jquery:DeliveryMethodChanged()">
+                                                </select>
+                                            </div>
+                                            <div class="col-4">
+                                                <input type="text" class="form-control form-control-sm" name="DeliveryMethodDesc" id="DeliveryMethodDesc" value="@cust.DeliveryMethodDesc">
+                                            </div>
+                                        </div>
+                                        <div class="row" style="padding-bottom: 3px;">
+                                            <div class="col-2">
+                                                <label>Signature Method</label>
+                                            </div>
+                                            <div class="col-4">
+                                                <select class="form-control form-control-sm" name="SignRequirementType" id="SignRequirementType">
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="padding-bottom: 3px;">
+                                            <div class="col-2">
+                                                <label>Purchase Order</label>
+                                            </div>
+                                            <div class="col-4">
+                                                <select class="form-control form-control-sm" name="PORequirementType" id="PORequirementType" onchange="jquery:PurchaseOrderChanged()">
+                                                </select>
+                                            </div>
+                                            <div class="col-4">
+                                                <input type="text" class="form-control form-control-sm" name="PORequirementAmount" id="PORequirementAmount" value="@cust.PORequirementAmount">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-2">
+                                                <label>PO Attachment</label>
+                                            </div>
+                                            <div class="col-4">
+                                                <select class="form-control form-control-sm" name="InvoiceAttachmentType" id="InvoiceAttachmentType">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="row" style="padding-bottom: 3px;">
+                                            <div class="col">
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" id="IsTaxExempt" name="IsTaxExempt" value="@cust.IsTaxExempt" checked="@cust.IsTaxExempt" onchange="jquery:ShowExemptStates()" />
+                                                    <label class="form-check-label" for="IsTaxExempt">Tax Exempt</label>
+                                                </div>
+                                                <input style="margin-left:20px; margin-right:20px; margin-top:3px;" type="text" class="form-control form-control-sm" name="TaxExempStates" id="TaxExempStates" value="@cust.TaxExemptStates" placeholder="Tax Exempt States" autocomplete="off" onclick="jquery:OpenTaxExemptStatesPopup()" />
+                                            </div>
+                                        </div>
+                                        <div class="row" style="padding-bottom: 3px;">
+                                            <div class="col">
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" id="IsApproved" name="IsApproved" value="@(cust.IsApproved??false)" checked="@(cust.IsApproved??false)" />
+                                                    <label class="form-check-label" for="IsApproved">Is Approved</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="padding-bottom: 3px;">
+                                            <div class="col">
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" id="IsArchived" name="IsArchived" value="@(cust.IsArchived??false)" checked="@(cust.IsArchived??false)" />
+                                                    <label class="form-check-label" for="IsArchived">Is Archived</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="padding-bottom: 3px;">
+                                            <div class="col">
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" id="IsCreditHold" name="IsCreditHold" value="@(cust.IsCreditHold??false)" checked="@(cust.IsCreditHold??false)" />
+                                                    <label class="form-check-label" for="IsCreditHold">Credit Hold</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="ContactsTab">
+                            <div class="col">
+                                <div class="row" style="padding-left: 15px;">
+                                    <button type="button" class="btn btn-default small" data-toggle="modal" data-target="#addContactModel">Add Contact</button>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="tblCustomerContacts">
+                                                <thead>
+                                                    <tr class="header">
+                                                        <td> Name</td>
+                                                        <td> Role</td>
+                                                        <td> Phone #</td>
+                                                        <td> Email Address</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="ContactsBody">
+                                                    @if (contacts != null)
+                                                    {
+                                                        @foreach (var dt in contacts)
+                                                        {
+                                                            <tr>
+                                                                <td> @dt.ContactName</td>
+                                                                <td> @dt.ContactType</td>
+                                                                <td>@dt.Phone</td>
+                                                                <td>@dt.Email</td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="AgreementsTab">
+                            <div class="col">
+                                <div class="row" style="padding-left: 15px;">
+                                    <button type="button" class="btn btn-default small" id="BtnNewAgreement">New Agreement</button>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="tblAgreements">
+                                                <thead>
+                                                    <tr class="header">
+                                                        <td> Agreement ID</td>
+                                                        <td> Status</td>
+                                                        <td> Nickname</td>
+                                                        <td> # Units</td>
+                                                        <td> # Years</td>
+                                                        <td> Award Date</td>
+                                                        <td> Start Date</td>
+                                                        <td> End Date</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="CustomerAgreementsBody">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="OpportunitiesTab">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="tblOppAssignments">
+                                                <thead>
+                                                    <tr class="header">
+                                                        <td> Load Type</td>
+                                                        <td> Nickname</td>
+                                                        <td> Customer Name</td>
+                                                        <td> Value</td>
+                                                        <td> Follow Up Date</td>
+                                                        <td> Priority</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="OppAssignmentsBody">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="SitesTab">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="tblCustomerSites">
+                                                <thead>
+                                                    <tr class="header">
+                                                        <td> Site Id</td>
+                                                        <td> Job Name</td>
+                                                        <td> Street</td>
+                                                        <td> City</td>
+                                                        <td> State</td>
+                                                        <td> Active Units #</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="SitesBody">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="AssetsTab">
+                            <div class="col">
+                                <div class="row" style="padding-left: 15px;">
+                                    <button type="button" class="btn btn-default small" id="BtnAddNewUnit">Add Asset</button>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="tblCustomerUnits">
+                                                <thead>
+                                                    <tr class="header">
+                                                        <td> Unit ID</td>
+                                                        <td> Site Name</td>
+                                                        <td> Asset Type</td>
+                                                        <td> City</td>
+                                                        <td> State</td>
+                                                        <td> Unit Status</td>
+                                                        <td> Annual Total</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="UnitsBody">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="CustomerPOTab">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col">
+                                        <button type="button" class="btn btn-default small" id="BtnAddCustomerPO">Add PO</button>
+                                    </div>
+                                    <div class="col">
+                                        <div class="float-right">
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" id="ShowExpiredPOs" checked />
+                                                <label class="form-check-label" style="font-size: medium;" for="ShowExpiredPOs">Show Expired POs</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="tblCustomerPOs">
+                                                <thead>
+                                                    <tr class="header">
+                                                        <td> PO Number</td>
+                                                        <td> Scope/Description</td>
+                                                        <td> Start Date</td>
+                                                        <td> End Date</td>
+                                                        <td> Starting Balance</td>
+                                                        <td> Quantity</td>
+                                                        <td> Remaining Balance</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="CustomerPOBody">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="InvoicesTab">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="tblCustomerInvoices">
+                                                <thead>
+                                                    <tr class="header">
+                                                        <td> Invoice #</td>
+                                                        <td> Inovice Date</td>
+                                                        <td> Purchase Order</td>
+                                                        <td> Services Total</td>
+                                                        <td> Taxes</td>
+                                                        <td> Invoice Total</td>
+                                                        <td> Invoice Status</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="InvoicesBody">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="NotesAssignmentsTab">
+                            <div class="col">
+                                <div class="row heading-row">
+                                    <div class="col" style="padding-left: 0px;">
+                                        <div class="float-right" style="padding-bottom: 5px;">
+                                            <button type="button" class="btn btn-default small" data-toggle="modal" data-target="#addOppModel">Add Note</button>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="float-right">
+                                            <button type="button" class="btn btn-default small" data-toggle="modal" data-target="#addAssignmentModel">Add Assignment</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="tblNotes">
+                                                <thead>
+                                                    <tr class="header">
+                                                        <td> Contact</td>
+                                                        <td> Discussion Summary</td>
+                                                        <td> Date of Discussion</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="NotesBody">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="tblAssignments">
+                                                <thead>
+                                                    <tr class="header">
+                                                        <td> Name</td>
+                                                        <td> Reponsibility</td>
+                                                        <td> Follow Up</td>
+                                                        <td> Status</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="AssignmentsBody">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="AttachmentsTab">
+
+                        </div>
+                    </div>
+
+                </EditForm>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addContactModel" role="dialog">
+        <div class="modal-dialog" id="addcontact_popup" style="top:2%!important;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add Contact</h4>
+                </div>
+                <EditForm Model="@contact" OnValidSubmit="@HandleValidSubmit">
+                    <DataAnnotationsValidator />
+                    
+                        <div class="modal-body">
+
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12 col-xl-12">
+
+                                    <div class="form-group row">
+                                        <div class="col">
+                                            <label class="col-form-label">Contact Type</label>
+                                            <InputSelect @bind-Value="contact.ContactType" class="form-control">
+                                                <option value=" ">--Select--</option>
+                                                <option>Sales</option>
+                                                <option>Customer</option>
+                                                <option>Billing</option>
+                                                <option>Site</option>
+                                                <option>Primary</option>
+                                                <option>Site Contact</option>
+                                                <option>Other</option>
+                                            </InputSelect>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12 col-md-12">
+                                            <input type="hidden" name="CustomerID" id="CustomerID" @*value="@ViewBag.Cid" *@ />
+                                            <label class="col-form-label">Contact Name</label>
+                                            <input type="text" class="form-control" name="ContactName" id="ContactName" @bind-value="@contact.ContactName">
+                                            <ValidationMessage For="@(() =>contact.ContactName)" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12 col-md-12">
+                                            <label class="col-form-label">Title</label>
+                                            <input type="text" class="form-control" name="ContactTitle" id="ContactTitle" @bind-value="@contact.ContactTitle">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12 col-md-12">
+                                            <label class="col-form-label">Phone Number</label>
+                                            <input type="text" class="form-control" name="Phone" id="Phone" @bind-value="@contact.Phone">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12 col-md-12">
+                                            <label class="col-form-label">Mobile Number</label>
+                                            <input type="text" class="form-control" name="Cell" id="Cell" @bind-value="@contact.Cell">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12 col-md-12">
+                                            <label class="col-form-label">Fax Number</label>
+                                            <input type="text" class="form-control" name="Fax" id="Fax" @bind-value="@contact.Fax">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12 col-md-12">
+                                            <label class="col-form-label">Email Address</label>
+                                            <input type="text" class="form-control" name="Email" id="Email" @bind-value="@contact.Email">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12 col-md-12">
+                                            <label class="col-form-label">Comment</label>
+                                            <input type="text" class="form-control" name="ContactComment" id="ContactComment" @bind-value="@contact.ContactComment">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-default" value="Save " />
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        </div>
+
+                </EditForm>
+            </div>
+
+        </div>
+    </div>
+
+}
+

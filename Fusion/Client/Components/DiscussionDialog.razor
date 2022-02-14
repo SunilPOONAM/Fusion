@@ -1,0 +1,50 @@
+﻿@if (ShowDialog)
+{
+    <div class="modal fade show d-block" id="addOppModel" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Notes</h4>
+                    <button type="button" class="close" @onclick="@Close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+
+                <EditForm Model="@discussion" OnValidSubmit="@HandleValidSubmit">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+
+                    <div class="modal-body">
+                        <div class="form-group row">
+                            <input type="hidden" id="DiscussionID" name="DiscussionID" @bind-value="discussion.DiscussionID" />
+                            <input type="hidden" id="DiscussionID" name="DiscussionID" @bind-value="discussion.AssignedObjectType" />
+                            <input type="hidden" id="DiscussionID" name="DiscussionID" @bind-value="discussion.ObjectID" />
+                            <label for="Contact" class="col-sm-2 col-form-label">Contact</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="Contact" class="form-control" required id="txtContact" @bind-value="discussion.Contact">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="oppdate" class="col-sm-2 col-form-label">Date</label>
+                            <div class="col-sm-10">
+                                <input type="date" class="form-control" name="DateStamp" id="txtDateStamp" required placeholder="enter date" @bind-value="discussion.DateStamp">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="summary" class="col-sm-2 col-form-label">Summary</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" name="Summary" id="txtSummary" required placeholder="Summary" @bind="discussion.Summary"></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" id="btnNotesave" class="btn btn-primary" value="Save" />
+                        <a class="btn btn-outline-primary" @onclick="@Close">Cancel</a>
+                    </div>
+                </EditForm>
+            </div>
+
+        </div>
+    </div>
+}

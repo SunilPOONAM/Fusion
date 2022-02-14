@@ -1,0 +1,529 @@
+﻿@page "/OpportunityInfo"
+@using Fusion.Client.Components
+@((MarkupString)loader)
+
+<EditForm Model="@opp">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    @if (opp == null)
+    {
+        <h2>Loading....</h2>
+    }
+    else
+    {
+        <div class="col-md-12 col-lg-12 col-xl-12 inner-main-row" style="padding-left:20px; padding-right: 20px;">
+            <div class="main-body">
+                <!-- second row body -->
+                <div class="clearfix"></div>
+                <div class="row second-row-content">
+                    <div class="col-md-12 action-btn-box" style="display:flex">
+                        <div style="margin-right: 5px;">
+                            <div class="inner-content-second-row">
+                                <button type="button" class="btn btn-default" id="PromotetoAgrbtn">@AgreementPromtedButtonText</button>
+                            </div>
+                        </div>
+                        <div style="margin-right: 5px;">
+                            <div class="inner-content-second-row">
+                                <button type="button" class="btn btn-default">@WorkOrderPromtedButtonText</button>
+                            </div>
+                        </div>
+                        <div style="margin-right: 5px;">
+                            <div class="inner-content-second-row">
+                                <button type="button" class="btn btn-default" @onclick='() => OpenCloseOppModal("Close (Revisit)")'>Close (Revisit)</button>
+                            </div>
+                        </div>
+                        <div style="margin-right: 5px;">
+                            <div class="inner-content-second-row">
+                                <button type="button" class="btn btn-default" @onclick='() => OpenCloseOppModal("Close (Lost)")'>Close (Lost)</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <br />
+                <section class="agreement-section">
+                    <div class="row heading-row">
+                        <div class="col-md-12">
+                            @*<h4>Manage Opportunity</h4>*@
+                        </div>
+                    </div>
+                    <div class="small">
+                        <div class="col-sm-5" style="padding-left: 0px; padding-right: 0px; float: left; width: 31%;">
+                            <div class="row">
+                                <div class="col-sm-3" style="padding-right: 0px;">
+                                    <label>@CustomerPrompt</label>
+                                    <input type="hidden" name="IsProspect" @bind-value="IsProspect" />
+                                    <input type="hidden" name="IsPromotable" @bind-value="IsPromotable" />
+                                    <input type="hidden" name="OppID" @bind-value="opp.OppID" />
+                                    <input type="hidden" name="ServiceCallID" @bind-value="opp.ServiceCallID" />
+                                    <input type="hidden" name="AgreementID" @bind-value="opp.AgreementID" />
+                                </div>
+                                <div class="col-sm-7" style="margin-left: 3px; padding-right: 0px;">
+                                    <div class="row">
+                                        <div style="padding-left: 0px; padding-right: 3px; width: 70%;">
+                                            <input type="text" class="form-control form-control-sm" value="@opp.CustomerName" @onchange="((arg) => HandleOnChange(arg, opp, opp => opp.CustomerName))" />
+                                            <div class="error-message alert-danger">Please enter Propect Name</div>
+                                        </div>
+                                        <div style="padding-left: 0px; width: 26%;">
+                                            <input type="hidden" class="form-control form-control-sm" name="CustomerID" id="CustomerID" value="@opp.CustomerID">
+                                            <a id="CustomerLink" class="btn btn-link" style="display:@(!string.IsNullOrEmpty(opp.CustomerID) ? "block" : "none")" @onclick="OpenBillToCustomer" >@opp.CustomerID</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="row" style="padding-bottom: 3px;">
+                                <div class="col-sm-3" style="padding-right: 0px;">
+                                    <label>Address</label>
+                                </div>
+                                <div class="col-sm-7" style="margin-left: 3px; padding-left: 0px; padding-right: 0px;">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Address Line 1" value="@opp.CustomerAddr1" @onchange="((arg) => HandleOnChange(arg, opp, opp => opp.CustomerAddr1))" />
+                                    <div class="error-message alert-danger">Please enter Address</div>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom: 3px;">
+                                <div class="col-sm-3" style="padding-right: 0px;">
+                                </div>
+                                <div class="col-sm-7" style="margin-left: 3px; padding-left: 0px; padding-right: 0px;">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Address Line 2" value="@opp.CustomerAddr2" @onchange="((arg) => HandleOnChange(arg, opp, opp => opp.CustomerAddr2))" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3" style="padding-right: 0px;">
+                                </div>
+                                <div class="col-sm-7" style="margin-left: 3px; padding-left: 0px;">
+                                    <div class="row">
+                                        <div style="padding-left: 15px; width: 50%;">
+                                            <input type="text" class="form-control form-control-sm" placeholder="City" value="@opp.CustomerCity" @onchange="((arg) => HandleOnChange(arg, opp, opp => opp.CustomerCity))" />
+                                            <div class="error-message alert-danger">Please enter City</div>
+                                        </div>
+                                        <div style="padding-right: 0px; padding-left: 3px; width: 20%;">
+                                            <input type="text" class="form-control form-control-sm" placeholder="State" value="@opp.CustomerState" @onchange="((arg) => HandleOnChange(arg, opp, opp => opp.CustomerState))" />
+                                            <div class="error-message alert-danger">Please enter State</div>
+                                        </div>
+                                        <div style="padding-left: 3px; width: 30%;">
+                                            <input type="text" class="form-control form-control-sm" placeholder="Zip" value="@opp.CustomerZip" @onchange="((arg) => HandleOnChange(arg, opp, opp => opp.CustomerZip))" />
+                                            <div class="error-message alert-danger">Please enter Zip</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="row">
+                                <div class="col-sm-3" style="padding-right: 0px;">
+                                    <label>Phone</label>
+                                </div>
+                                <div class="col-sm-7" style="margin-left: 3px; padding-left: 0px; padding-right: 0px;">
+                                    <input type="tel" class="form-control form-control-sm" value="@opp.CustomerPhone" @onchange="((arg) => HandleOnChange(arg, opp, opp => opp.CustomerPhone))" />
+                                    <div class="error-message alert-danger">Please enter Phone</div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="row">
+                                <div class="col-sm-3" style="padding-right: 0px;">
+                                </div>
+                                <div class="col-sm-7" style="margin-left: 3px; padding-left: 0px; ">
+                                    <input type="button" id="selectCustomer" value="@BillToPrompt" class="btn btn-sm" @onclick="OpenCustomerModal">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-5" style="padding-left: 0px; padding-right: 0px; float: left; width: 24%;">
+                            <div class="row" style="padding-bottom: 3px;">
+                                <div class="col-sm-4" style="padding-right: 0px;">
+                                    <label>Nick Name</label>
+                                </div>
+                                <div class="col-sm-6" style="padding-left: 0px; padding-right: 0px;">
+                                    <input type="text" class="form-control form-control-sm" value="@opp.Nickname" @onchange="((arg) => HandleOnChange(arg, opp, opp => opp.Nickname))" />
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom: 3px;">
+                                <div class="col-sm-4" style="padding-right: 0px;">
+                                    <label>Contact Name</label>
+                                </div>
+                                <div class="col-sm-6" style="padding-left: 0px; padding-right: 0px;">
+                                    <input type="text" class="form-control form-control-sm" value="@opp.ContactName" @onchange="((arg) => HandleOnChange(arg, opp, opp => opp.ContactName))" />
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom: 3px;">
+                                <div class="col-sm-4" style="padding-right: 0px;">
+                                    <label>Contact Phone</label>
+                                </div>
+                                <div class="col-sm-6" style="padding-left: 0px; padding-right: 0px;">
+                                    <input type="tel" class="form-control form-control-sm" value="@opp.ContactPhone" @onchange="((arg) => HandleOnChange(arg, opp, opp => opp.ContactPhone))" />
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom: 3px;">
+                                <div class="col-sm-4" style="padding-right: 0px;">
+                                    <label>Contact Email</label>
+                                </div>
+                                <div class="col-sm-6" style="padding-left: 0px; padding-right: 0px;">
+                                    <input type="text" class="form-control form-control-sm" value="@opp.ContactEmail" @onchange="((arg) => HandleOnChange(arg, opp, opp => opp.ContactEmail))" />
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom: 3px;">
+                                <div class="col-sm-4" style="padding-right: 0px;">
+                                    <label>Date Promoted</label>
+                                </div>
+                                <div class="col-sm-6" style="padding-left: 0px; padding-right: 0px;">
+                                    <input type="text" class="form-control form-control-sm" value="@(opp.PromoteDate == null ? "N/A" : opp.PromoteDate.Value.ToString("MM/dd/yyyy"))" disabled />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4" style="padding-right: 0px;">
+                                    <label>Date Closed</label>
+                                </div>
+                                <div class="col-sm-6" style="padding-left: 0px; padding-right: 0px;">
+                                    <input type="text" class="form-control form-control-sm" value="@(opp.ClosedDate == null ? "N/A" : opp.ClosedDate.Value.ToString("MM/dd/yyyy"))" disabled />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4" style="padding-left: 0px; padding-right: 0px; float: left; width: 21%;">
+                            <div class="row" style="padding-bottom: 3px;">
+                                <div class="col-sm-6" style="padding-right: 0px;">
+                                    <label>Opportunity Owner</label>
+                                </div>
+                                <div class="col-sm-6" style="padding-left: 0px; padding-right: 0px;">
+                                    <select class="form-control form-control-sm" value="@opp.OpportunityOwner" @onchange="((arg) => HandleOnChange(arg, opp, opp => opp.OpportunityOwner))">
+                                        @if (EmployeesList == null)
+                                        {
+                                            <option>Loading...</option>
+                                        }
+                                        else
+                                        {
+                                            <option value=" "></option>
+                                            foreach (var owner in EmployeesList)
+                                            {
+                                                <option>@(owner.LastName + ", " + owner.FirstName)</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom: 3px;">
+                                <div class="col-sm-6" style="padding-right: 0px;">
+                                    <label>Opportunity Source</label>
+                                </div>
+                                <div class="col-sm-6" style="padding-left: 0px; padding-right: 0px;">
+                                    <select class="form-control form-control-sm" value="@opp.OpportunitySource" @onchange="((arg) => HandleOnChange(arg, opp, opp => opp.OpportunitySource))">
+                                        @if (OpportunitySource == null)
+                                        {
+                                            <option>Loading...</option>
+                                        }
+                                        else
+                                        {
+                                            <option value=" "></option>
+                                            foreach (var source in OpportunitySource)
+                                            {
+                                                <option value="@source">@source</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom: 3px;">
+                                <div class="col-sm-6" style="padding-right: 0px;">
+                                    <label>Industry</label>
+                                </div>
+                                <div class="col-sm-6" style="padding-left: 0px; padding-right: 0px;">
+                                    <select class="form-control form-control-sm" value="@opp.Industry" @onchange="((arg) => HandleOnChange(arg, opp, opp => opp.Industry))">
+                                        @if (IndustryList == null)
+                                        {
+                                            <option>Loading...</option>
+                                        }
+                                        else
+                                        {
+                                            <option value=" "></option>
+                                            foreach (var itm in IndustryList)
+                                            {
+                                                <option value="@itm.CodeID">@itm.CodeDesc</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom: 3px;">
+                                <div class="col-sm-6" style="padding-right: 0px;">
+                                    <label>Stage</label>
+                                </div>
+                                <div class="col-sm-6" style="padding-left: 0px; padding-right: 0px;">
+                                    @*@Html.HiddenFor(m => m.RevisitDate)
+                                        @Html.HiddenFor(m => m.Status)*@
+                                    <select class="form-control form-control-sm" value="@opp.Stage" @onchange="((arg) => HandleOnChange(arg, opp, opp => opp.Stage))">
+                                        @if (StageList == null)
+                                        {
+                                            <option>Loading...</option>
+                                        }
+                                        else
+                                        {
+                                            <option value=" "></option>
+                                            foreach (var itm in StageList)
+                                            {
+                                                <option value="@itm.CodeID">@itm.CodeDesc</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom: 3px;">
+                                <div class="col-sm-6" style="padding-right: 0px;">
+                                    <label>Type</label>
+                                </div>
+                                <div class="col-sm-6" style="padding-left: 0px; padding-right: 0px;">
+                                    <select class="form-control form-control-sm" value="@opp.OppType" @onchange="((arg) => HandleOnChange(arg, opp, opp => opp.OppType))">
+                                        @if (TypeList == null)
+                                        {
+                                            <option>Loading...</option>
+                                        }
+                                        else
+                                        {
+                                            <option value=" "></option>
+                                            foreach (var itm in TypeList)
+                                            {
+                                                <option value="@itm.CodeID">@itm.CodeDesc</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom: 3px;">
+                                <div class="col-sm-6" style="padding-right: 0px;">
+                                    <label>Value($)</label>
+                                </div>
+                                <div class="col-sm-6" style="padding-left: 0px; padding-right: 0px;">
+                                    <input type="number" class="form-control form-control-sm" step="0.01" value="@opp.Value" @onchange="((arg) => HandleOnChange(arg, opp, opp => opp.Value))" />
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom: 3px;">
+                                <div class="col-sm-6" style="padding-right: 0px;">
+                                    <label>Units</label>
+                                </div>
+                                <div class="col-sm-6" style="padding-left: 0px; padding-right: 0px;">
+                                    <input type="number" class="form-control form-control-sm" value="@opp.UnitQty" @onchange="((arg) => HandleOnChange(arg, opp, opp => opp.UnitQty))" />
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom: 3px;">
+                                <div class="col-sm-6" style="padding-right: 0px;">
+                                    <label>Probability(%)</label>
+                                </div>
+                                <div class="col-sm-6" style="padding-left: 0px; padding-right: 0px;">
+                                    <input type="number" class="form-control form-control-sm" step="0.01" value="@opp.Probability" @onchange="((arg) => HandleOnChange(arg, opp, opp => opp.Probability))" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3" style="padding-left: 0px; padding-right: 0px; float: right; width: 19%;">
+                            <label>Opportunity Description</label>
+                            <textarea class="form-control form-control-sm" rows="5" value="@opp.Description" @onchange="((arg) => HandleOnChange(arg, opp, opp => opp.Description))" />
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <br />
+                    <hr />
+                    <div class="row small">
+                        <div class="col-md-6">
+                            <div class="pull-left">
+                                <h5>Notes</h5>
+                            </div>
+                            <div class="pull-right">
+                                <input type="button" value="Add Note" class="btn btn-default" @onclick="AddDiscussion">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="pull-left">
+                                <h5>
+                                    Assignments
+                                </h5>
+                            </div>
+                            <div class="pull-right">
+                                <input type="button" value="Add Assignment" class="btn btn-default" @onclick="AddAssignment">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="row small">
+                        <div class="col-md-6">
+                            @*<div class="table-responsive">*@
+                            <table class="table table-bordered table-responsive-sm" cellspacing="0" width="100%" id="tblNotes">
+                                <thead>
+                                    <tr class="header">
+                                        <td> Contact</td>
+                                        <td> Subject</td>
+                                        <td> History Log</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (OppDiscussionlist != null && OppDiscussionlist.Count > 0)
+                                    {
+                                        int i = 0;
+                                        foreach (var itm in OppDiscussionlist)
+                                        {
+                                            i += 1;
+                                            <tr class="selectableRow" @onclick="() => EditDiscussion(itm)">
+                                                <td>@itm.Contact</td>
+                                                <td>@itm.Summary</td>
+                                                <td>@(itm.DateStamp == null ? "" : Convert.ToDateTime(itm.DateStamp).ToString("MM/dd/yyy"))</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                            @*</div>*@
+                        </div>
+                        <div class="col-md-6">
+                            @*<div class="table-responsive">*@
+                            <table class="table table-bordered table-responsive-sm" cellspacing="0" width="100%" id="tblAssignments">
+                                <thead>
+                                    <tr class="header">
+                                        <td> Name</td>
+                                        <td> Responsibility</td>
+                                        <td> Follow Up</td>
+                                        <td> Status</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (OppAssignmentlist != null && OppAssignmentlist.Count > 0)
+                                    {
+                                        int i = 0;
+                                        foreach (var itm in OppAssignmentlist)
+                                        {
+                                            i += 1;
+                                            <tr class="selectableRow" @onclick="() => EditAssignment(itm)">
+                                                <td>@itm.Assignee</td>
+                                                <td>@itm.Responsibility</td>
+                                                <td>@(itm.FollowUp == null ? "" : Convert.ToDateTime(itm.FollowUp).ToString("MM/dd/yyy"))</td>
+                                                <td>@itm.CodeDesc</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                            @*</div>*@
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+                </section>
+                <!-- second row body -->
+
+            </div>
+        </div>
+    }
+</EditForm>
+
+@if (ShowCustomerSearch)
+{
+    <div class="modal fade show d-block small" id="myModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="width:800px;">
+                <div class="modal-header">
+                    <h4 class="modal-title">Customer Selection</h4>
+                    <button type="button" class="close" @onclick="@CloseCustomerModal" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-10 col-lg-10 col-xl-10">
+                            <input id="searchText" type="text" class="form-control form-control" @bind-value="SearchText" style="max-width:100%" />
+                        </div>
+                        <div class="col-md-2 col-lg-2 col-xl-2" style="padding-left:0px;">
+                            <a class="btn btn-default" @onclick="BindCustomers">Search</a>
+                        </div>
+                    </div><br />
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12 col-xl-12">
+                            @*<div class="table-responsive">*@
+                            <table id="datatable" class="table table-bordered table-sm" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Customer</th>
+                                        <th>City</th>
+                                        <th>State</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (SearchedCustomersList != null && SearchedCustomersList.Count > 0)
+                                    {
+                                        foreach (var itm in SearchedCustomersList)
+                                        {
+                                            <tr class="selectableRow" @onclick="() => SelectCustomer(itm)">
+                                                <td>@itm.CustomerID</td>
+                                                <td>@itm.CustomerName</td>
+                                                <td>@itm.City</td>
+                                                <td>@itm.State</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                            @*</div>*@
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" id="btnNotesave" class="btn btn-primary" value="New Customer" />
+                    <a class="btn btn-outline-primary" @onclick="@CloseCustomerModal">Cancel</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+
+@if (ShowCloseOppModal)
+{
+    <div class="modal fade show d-block small" id="OppCloseModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@CloseOppTitle</h5>
+                    <button type="button" class="close" @onclick="@CloseModal" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @if (CloseRevisitVisible)
+                    {
+                        <div class="col">
+                            <div class="row">
+                                <h6>Select a date to revisit this opporutnity</h6>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="row">
+                                <input type="date" class="form-control" @bind-value="RevisitDate" >
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col" >
+                            <div class="row">
+                                <h6>Are you sure you want to close this opportunity and mark it as lost? Doing so will remove it permanently from your assignments.</h6>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="row">
+                                <h6>If you'd like to instead revisit this opportunity select 'Close (Revisit)'.</h6>
+                            </div>
+                        </div>
+                    }
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" @onclick="CloseOpportunity">Confirm</button>
+                    <button type="button" class="btn btn-default" @onclick="CloseModal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<DiscussionDialog @ref="DiscussionDialog" CloseEventCallback="@DiscussionDialog_OnDialogClose"></DiscussionDialog>
+<AssignmentDialog @ref="AssignmentDialog" CloseEventCallback="@AssignmentDialog_OnDialogClose"></AssignmentDialog>

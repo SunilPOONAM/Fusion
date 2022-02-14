@@ -1,0 +1,57 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using System.Text.Json;
+@using Fusion.Shared.Models
+
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
+
+<AuthorizeView >
+    <Authorized>
+        @IdentityName = @context.User.Identity.Name
+        <ul class="navbar-nav float-right right-second-row">
+            Hello, @employee.FirstName &nbsp; @employee.LastName!
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="javascript:;" id="userName" data-toggle="dropdown" runat="server"></a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="javascript:;" @onclick="BeginLogout" id="btnLogout">Logout</a>
+                </div>
+            </li>
+        </ul>
+    </Authorized>
+</AuthorizeView>
+
+@code{
+
+    HttpClient http = new HttpClient();
+    private Employee employee = new();
+    [Parameter] public string IdentityName { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetEmployee(IdentityName);
+    }
+
+    private async Task GetEmployee(string identityName)
+    {
+        ResponseModel res = await http.GetFromJsonAsync<ResponseModel>("api/login?identityName=" + identityName.ToUpper() + "");
+        if (!res.Status)
+        {
+
+        }
+        else
+        {
+            employee = JsonSerializer.Deserialize<Employee>(JsonSerializer.Serialize(res.Result), new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+        }
+    }
+
+    private async Task BeginLogout(MouseEventArgs args)
+    {
+        await SignOutManager.SetSignOutState();
+        Navigation.NavigateTo("authentication/logout");
+    }
+
+}

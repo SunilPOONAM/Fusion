@@ -1,0 +1,33 @@
+﻿@page "/auth/redirecttologin"
+
+@using Fusion.Shared.Models
+
+@code
+{
+    [Inject]
+    public AuthenticationStateProvider stateProvider { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Employee emp = await sessionStorage.GetItemAsync<Employee>("Employee");
+
+        if (emp != null)
+        {
+            var state = await stateProvider.GetAuthenticationStateAsync();
+
+            if (state.User.HasClaim("LoggedIn", "true"))
+            {
+                MyNavigationManager.NavigateTo("./Dashboard", false);
+            }
+            else
+            {
+                MyNavigationManager.NavigateTo("./", false);
+            }
+        }
+        else
+        {
+            MyNavigationManager.NavigateTo("./", false);
+        }
+
+    }
+}

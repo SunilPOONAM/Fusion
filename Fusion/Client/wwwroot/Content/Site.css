@@ -1,0 +1,180 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    /*max-width: 280px;*/
+}
+
+
+span.field-validation-error span {
+    font-size: 12px;
+    color: red;
+    padding-left: 5px;
+}
+
+.navbar-inverse {
+    background-color: #083763 !important;
+    border-color: #083763 !important;
+}
+* {
+    box-sizing: border-box;
+}
+
+form.example input[type=text] {
+    padding: 4px;
+    font-size: 17px;
+    border: 1px solid grey;
+    float: left;
+    width: 80%;
+    background: #f1f1f1;
+}
+
+form.example button {
+    float: left;
+    width: 20%;
+    padding: 04px;
+    background: #2196F3;
+    color: white;
+    font-size: 17px;
+    border: 1px solid grey;
+    border-left: none;
+    cursor: pointer;
+}
+
+    form.example button:hover {
+        background: #0b7dda;
+    }
+
+form.example::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.search-box-block {
+    position: relative;
+}
+
+.search-box {
+    position: absolute;
+}
+
+#first-header-main .col-md-11 {
+    margin-top: 5px;
+}
+
+#first-header-main {
+    border-bottom: 1px solid #9f9f9f;
+    box-shadow: 0px 0px 2px 0px;
+    padding-bottom: 5px;
+    padding-top: 10px;
+}
+
+.panel-right-btn {
+    margin-top: 5px;
+}
+
+#second-row .col-md-1 {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#second-row {
+    padding: 5px;
+}
+
+.second-row-content {
+    border-bottom: 1px solid #9f9f9f;
+    box-shadow: 0px 1px 1px 0px;
+    padding-bottom: 5px;
+    padding-top: 15px;
+}
+
+.inner-content-second-row {
+    margin-top: -10px;
+}
+
+.heading-row h5 {
+    text-decoration: underline;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.error-message {
+    color: red;
+}
+
+label {
+    font-weight: 500 !important;
+    color: #5c5c5c !important;
+    font-family: system-ui !important;
+}
+
+.agreement-section {
+    padding: 30px 10px;
+}
+
+.customer-section {
+    padding: 30px 30px;
+}
+
+.custom-input {
+    padding: 0px;
+}
+
+.custom-input input {
+    font-size: smaller;
+}
+
+.clearfix {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#second-row .inner-main-row {
+    /*border-right: 2px solid #bdbbbb;
+    padding-right: 25px;*/
+}
+
+.col-lg-1 {
+    width: 8.33333333%;
+    margin-right: 10.5px;
+}
+
+.error-message {
+    display: none;
+}
+
+.header {
+    background-color: #5c5c5c;
+    color: white;
+}
+
+.inner-main-row {
+    /*border-right: 2px solid gray;
+    padding-right: 25px;*/
+}
+
+#Opportunity-box {
+    position: absolute;
+    right: 0px;
+    top: 27%;
+}

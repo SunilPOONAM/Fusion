@@ -1,0 +1,98 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager nav
+@using Fusion.Client.Providers
+@using Fusion.Shared.Models
+
+<style>
+    .dropdown-menu {
+        left: auto !important;
+        right: 0;
+    }
+
+    li.nav-item.dropdown.show a {
+        background: transparent;
+        color: #000;
+    }
+</style>
+
+<AuthorizeView Policy="LoggedIn">
+    <Authorized>
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark main-menu-block" style=" justify-content: space-between;">
+
+            <a class="navbar-brand" href="javascript:;" style="padding:5px;">
+                <img src="./Content/images/logo.png" class="img-responsive" style="width:180px; padding-top: 10px; padding-bottom: 0px; float:left;" />
+                <span style="font-size: 52px; font-weight: bold; margin-left:20px; vertical-align:top; float:left;"><span style="font-size: 62px; font-weight:bold; ">F</span>USION</span>
+            </a>
+
+            <ul class="navbar-nav float-right" style="padding-top: 25px;">
+                <li class="nav-item">
+                    <a class="nav-link" href="./Dashboard"><i class="fa fa-dashboard"></i> Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa fa-clock-o"></i> Scheduling</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa fa-files-o" aria-hidden="true"></i> Reports</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa fa-file" aria-hidden="true"></i> Billing</a>
+                </li>
+
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                        <i class="fa fa-map-marker" aria-hidden="true"></i> All Territories &nbsp;
+                    </a>
+                    <div class="dropdown-menu">
+                    </div>
+                </li>
+            </ul>
+        </nav>
+
+        <nav class="navbar navbar-expand-sm" style="height:40px;">
+            <ul class="navbar-nav float-right right-second-row">
+                @employee.FirstName&nbsp;@employee.LastName
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="javascript:;" id="userName" data-toggle="dropdown" runat="server"></a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="javascript:;">User Preferences</a>
+                        <AuthorizeView Policy="AdminUser">
+                            <Authorized Context="adminpanel">
+                                <div class="dropdown-divider" />
+                                <div style="padding-left: 10px;"><h5>Admin</h5></div>
+                                <a class="dropdown-item" href="javascript:;">Users</a>
+                                <a class="dropdown-item" href="javascript:;">Roles</a>
+                                <a class="dropdown-item" href="./Permissions">Permissions</a>
+                            </Authorized>
+                        </AuthorizeView>
+                        <div class="dropdown-divider" />
+                        <a class="dropdown-item" href="javascript:;" @onclick="OnLogoutButtonClick" id="btnLogout">Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+
+        @Body
+
+        @code{
+            [Inject]
+            public AuthenticationStateProvider stateProvider { get; set; }
+            private Employee employee = new();
+            protected override async Task OnInitializedAsync()
+            {
+                employee = await sessionStorage.GetItemAsync<Employee>("Employee");
+            }
+            private void OnLogoutButtonClick()
+            {
+                ((BlazorAuthenticationStateProvider)stateProvider).MarkUserAsLoggedOut();
+            }
+
+        }
+
+    </Authorized>
+    <NotAuthorized Context="Auth">
+        <RedirectToLogin />
+    </NotAuthorized>
+</AuthorizeView>
+
+
